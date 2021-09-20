@@ -7,6 +7,7 @@ import PassportTwitter from './passport/twitter';
 import PassportYandex from './passport/yandex';
 import PassportVK from './passport/vk';
 import PassportGitHub from './passport/github';
+import PassportSteam from './passport/steam';
 
 import * as CONFIG from '../config/config.secret.json';
 
@@ -76,6 +77,23 @@ export async function createUser(req: core.Request, search: UserSearch, insert: 
   return merge(await create(search, insert), req.user);
 }
 
+export async function createUserForSteam(profile: any) {
+  const db = await DB();
+  const users = db.collection('users');
+  const user = await users.findOne({'id': profile._json.steamid});
+
+  if (!user) {
+    const {acknowledged, insertedId} = await users.insertOne(profile);
+
+    if (acknowledged) {
+      return users.findOne(insertedId);
+    } else {
+      return null;
+    }
+  }
+  return user;
+}
+
 export function redirect(req: core.Request, res: core.Response) {
   if (req.user) {
     res.redirect((req.session as any).returnTo || '/');
@@ -133,6 +151,10 @@ export default (APP: core.Express) => {
 
   if (CONFIG.github.clientID && CONFIG.github.clientSecret) {
     PassportGitHub(APP, passport);
+  }
+
+  if (CONFIG.steam.clientSecret) {
+    PassportSteam(APP, passport);
   }
 
   APP.get('/logout', (req, res) => {

@@ -1,7 +1,7 @@
 {
   "apps": [
     {
-      "name": "CasualChat",
+      "name": "App",
       "script": "./scripts/server.ts",
       "node_args": [],
       "instances": "1",

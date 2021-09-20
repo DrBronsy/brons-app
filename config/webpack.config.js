@@ -205,7 +205,7 @@ module.exports = (target, mode) => {
           ]
         },
         {
-          test: /images\/.*\.(jpe?g|png|gif)$/,
+          test: /images/,
           use: [
             {
               loader: 'url-loader',

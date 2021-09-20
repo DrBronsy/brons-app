@@ -1080,6 +1080,19 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@passport-next/passport-openid@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@passport-next/passport-openid/-/passport-openid-1.0.0.tgz#d3b5e067a9aa1388ed172ab7cc02c39b8634283d"
+  integrity sha512-W9uj4Ui/ZK/iBUNzSNxPWDQ8wCD1tUddGEVSGm0FN0B7ewo3yBQLGMoW3i3UqcwEzxdyGbAj06ohAhNQIXC4VA==
+  dependencies:
+    "@passport-next/passport-strategy" "1.x.x"
+    openid "2.x.x"
+
+"@passport-next/passport-strategy@1.x.x":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@passport-next/passport-strategy/-/passport-strategy-1.1.0.tgz#4c0df069e2ec9262791b9ef1e23320c1d73bdb74"
+  integrity sha512-2KhFjtPueJG6xVj2HnqXt9BlANOfYCVLyu+pXYjPGBDT8yk+vQwc/6tsceIj+mayKcoxMau2JimggXRPHgoc8w==
+
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"
@@ -1460,6 +1473,11 @@
     "@types/express" "*"
     "@types/oauth" "*"
     "@types/passport" "*"
+
+"@types/passport-steam@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@types/passport-steam/-/passport-steam-1.0.1.tgz#a65fa1647e29e8bc83bd29f174ce83967558c6ab"
+  integrity sha512-dgqJLk0SxquRE8rbF3FLVtkCUvGqKdzSeLmeVQ3SQlzCSiiT0UnA9oJz8fFjUjZ/j673SvzYkRLQ1OKP7oA0XQ==
 
 "@types/passport-twitter@^1.0.37":
   version "1.0.37"
@@ -6711,6 +6729,14 @@ onetime@^5.1.2:
   dependencies:
     mimic-fn "^2.1.0"
 
+openid@2.x.x:
+  version "2.0.10"
+  resolved "https://registry.yarnpkg.com/openid/-/openid-2.0.10.tgz#b611ee673dbefd9c8199f1e30ff3e75628b4a504"
+  integrity sha512-EFTQ61/OUVhCeq78Y3rBpdKSuvgb0lwkU8nN4QTdcv0afc5MT7e4IVuZwgkMsgE993dmhbIhkxHFP3iTVJXWmw==
+  dependencies:
+    axios "^0.21.4"
+    qs "^6.5.2"
+
 optionator@^0.9.1:
   version "0.9.1"
   resolved "https://registry.yarnpkg.com/optionator/-/optionator-0.9.1.tgz#4f236a6373dae0566a6d43e1326674f50c291499"
@@ -7007,6 +7033,14 @@ passport-oauth@1.0.x:
   dependencies:
     passport-oauth1 "1.x.x"
     passport-oauth2 "1.x.x"
+
+passport-steam@^1.0.16:
+  version "1.0.16"
+  resolved "https://registry.yarnpkg.com/passport-steam/-/passport-steam-1.0.16.tgz#013e9ddb513fff90f706c7b21bb0e659f0bb2ed3"
+  integrity sha512-5GqEmeclxaO4SlvKEvyOoy5LBX5oq11l9ub4OMBwwRjO+U3tSGgnDZnpKVph2stg/MptiphCOw8g5jkITyP4ig==
+  dependencies:
+    "@passport-next/passport-openid" "^1.0.0"
+    steam-web "0.4.0"
 
 passport-strategy@1.x.x:
   version "1.0.0"
@@ -7531,6 +7565,13 @@ qs@6.7.0:
   version "6.7.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.7.0.tgz#41dc1a015e3d581f1621776be31afb2876a9b1bc"
   integrity sha512-VCdBRNFTX1fyE7Nb6FYoURo/SPe62QCaAyzJvUjwRaIsc+NePBEniHlvxFmmX56+HZphIGtV0XeCirBtpDrTyQ==
+
+qs@^6.1.0, qs@^6.5.2:
+  version "6.10.1"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.10.1.tgz#4931482fa8d647a5aab799c5271d2133b981fb6a"
+  integrity sha512-M528Hph6wsSVOBiYUnGf+K/7w0hNshs/duGsNXPUCLH5XAqjEtiPGwNONLV0tBH8NoGb0mvD5JubnUTrujKDTg==
+  dependencies:
+    side-channel "^1.0.4"
 
 qs@~6.5.2:
   version "6.5.2"
@@ -8636,6 +8677,13 @@ stdout-stream@^1.4.0:
   integrity sha512-j4emi03KXqJWcIeF8eIXkjMFN1Cmb8gUlDYGeBALLPo5qdyTfA9bOtl8m33lRoC+vFMkP3gl0WsDr6+gzxbbTA==
   dependencies:
     readable-stream "^2.0.1"
+
+steam-web@0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/steam-web/-/steam-web-0.4.0.tgz#9333b5843ff7ebd77945fe09a0d5d5b28694b331"
+  integrity sha1-kzO1hD/369d5Rf4JoNXVsoaUszE=
+  dependencies:
+    qs "^6.1.0"
 
 strict-uri-encode@^1.0.0:
   version "1.1.0"

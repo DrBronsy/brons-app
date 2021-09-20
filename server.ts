@@ -21,8 +21,8 @@ const STATIC = __dirname + '/build';
 
 const certificates = [
   {
-    key: PATH.join(__dirname + '/server.key'),
-    cert: PATH.join(__dirname + '/server.crt'),
+    key: PATH.join(__dirname + '/cert.key'),
+    cert: PATH.join(__dirname + '/cert.pem'),
   }
 ].find(({key, cert}) => FS.existsSync(key) && FS.existsSync(cert));
 

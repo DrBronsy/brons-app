@@ -4,6 +4,16 @@ export interface User {
   _id?: ObjectId,
   id?: string;
   displayName?: string;
+  steam?: {
+    steamId: string;
+    personaname: string;
+    profileurl: string;
+    avatar?: string;
+    primaryclanid: string;
+    timecreated: number;
+    photos?: string;
+    _json?: string
+  }
   facebook?: {
     id: string;
     access: string;
