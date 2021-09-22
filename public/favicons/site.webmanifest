@@ -50,7 +50,7 @@
     ],
     "theme_color": "#333333",
     "background_color": "#333333",
-    "start_url": "https://facebook-developer-circle-moscow.github.io/CasualChat/",
+    "start_url": "https://brons.app",
     "display": "standalone",
     "orientation": "portrait"
 }

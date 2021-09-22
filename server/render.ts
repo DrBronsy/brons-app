@@ -3,6 +3,7 @@
 import * as FS from 'fs';
 import * as PATH from 'path';
 import {minify as MINIFY_HTML} from 'html-minifier';
+import fetch from 'cross-fetch';
 
 import {User} from '../src/models/user';
 
@@ -19,13 +20,7 @@ require.extensions['.png'] = () => '';
 require.extensions['.jpg'] = () => '';
 require.extensions['.jpeg'] = () => '';
 require.extensions['.scss'] = () => '';
-
-import * as relay from 'relay-runtime';
-
-// @ts-ignore
-relay.graphql = (query: string) => {
-  return query;
-};
+require.extensions['.less'] = () => '';
 
 import * as CONFIG from '../config/config.secret.json';
 
@@ -44,11 +39,14 @@ import {renderToStringAsync} from 'react-async-ssr';
 import {StaticRouter} from 'react-router-dom';
 import {createStore, Store} from 'redux';
 import {Provider} from 'react-redux';
+import {
+  ApolloClient,
+  createHttpLink,
+  InMemoryCache,
+  ApolloProvider
+} from '@apollo/client';
 import * as core from 'express-serve-static-core';
 import {StaticRouterContext} from 'react-router';
-import {Metadata} from 'models/metadata';
-
-import MetadataRendered from './metadata';
 
 const MetadataExtractorRegExp = /<code.*?data-extract=['"]true['"].*?>(?<metadata>.*?)<\/code>/ig;
 
@@ -60,17 +58,19 @@ async function render(
     {
       url,
       csrf,
-      user
+      user,
+      header
     }: {
       url: string,
       csrf: string,
-      user: User
+      user: User,
+      header: any
     }
 ): Promise<{
   result: string,
   store: Store,
   context: StaticRouterContext,
-  metadata: Metadata;
+  client: ApolloClient<any>;
 }> {
   const context = {};
 
@@ -85,15 +85,29 @@ async function render(
     }
   });
 
+  const client = new ApolloClient({
+    ssrMode: true,
+    link: createHttpLink({
+      uri: '/graphql',
+      credentials: 'same-origin',
+      fetch,
+    }),
+    cache: new InMemoryCache(),
+  });
+
   const result = await renderToStringAsync(
-      h(
-          Provider,
-          {store},
-          h(
-              StaticRouter,
-              {location: url, context},
-              h(App)
-          )
+      h(ApolloProvider,
+          // @ts-ignore
+          {client},
+        h(
+            Provider,
+            {store},
+            h(
+                StaticRouter,
+                {location: url, context},
+                h(App)
+            )
+        )
       )
   );
 
@@ -103,7 +117,7 @@ async function render(
     result: result.replace(MetadataExtractorRegExp, ''),
     store,
     context,
-    metadata: match ? JSON.parse(match.groups.metadata) : {}
+    client
   };
 }
 
@@ -113,10 +127,11 @@ export default (APP: core.Express) => {
   APP.get('*', async (req, res) => {
     try {
       // Server side render
-      const {result, store, context, metadata} = await render({
+      const {result, store, context, client} = await render({
         csrf: req.csrfToken(),
         url: req.url.replace('index.html', ''),
-        user: req.user as User
+        user: req.user as User,
+        header: req.header
       });
 
       if (context.url) {
@@ -126,9 +141,9 @@ export default (APP: core.Express) => {
         // Render html
         const html = MINIFY_HTML(
             HTML
-            .replace(/%META_TAGS%/ig, MetadataRendered(metadata))
             .replace(/%INLINE_STYLE%/ig, INLINE_STYLE)
             .replace(/%PRELOADED_STATE%/ig, serialize(store.getState()))
+            .replace(/%PRELOADED_APOLLO_STATE%/ig, serialize(client.extract()))
             .replace(/%INLINE_SCRIPT%/ig, INLINE_SCRIPT)
             .replace(/%SVG_SPRITE%/ig, SVG)
             .replace(/%APP%/ig, result),
@@ -147,6 +162,7 @@ export default (APP: core.Express) => {
         res.send(html);
       }
     } catch (e) {
+      console.log(e)
       res.writeHead(500);
       res.end();
     }

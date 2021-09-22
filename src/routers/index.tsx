@@ -8,46 +8,43 @@ import {State as StoreTree} from 'store/index';
 import {User} from 'models/user';
 
 import Home from 'screens/Home';
-import Users from 'screens/Users';
 import Login from 'screens/Login';
 import Profile from 'screens/Profile';
 import ErrorPage from 'screens/ErrorPage';
 
-export interface OwnProps {
-  ssr?: boolean
+interface OwnProps {
+  children?: React.ReactNode;
+  page?: string;
+  className?: string;
 }
 
-export interface Props extends OwnProps {
+interface Props extends OwnProps {
+  ssr?: boolean
   csrf: string;
   user: User;
 }
 
-function Routs(props: Props) {
+function Routs(props: Props): JSX.Element {
   return (
       <Switch>
         <Route
             path='/'
             exact={true}
-            component={() => <Home {...props}/>}
+            component={() => <Home/>}
         />
         <Route
             path='/login/'
             exact={true}
         >
-          {props.user ? <Redirect to='/profile/'/> : <Login {...props}/>}
+          {props.user ? <Redirect to='/profile/'/> : <Login/>}
         </Route>
         <Route
             path='/profile/'
             exact={true}
-            component={() => <Profile {...props}/>}
+            component={() => <Profile/>}
         />
         <Route
-            path='/users/'
-            exact={true}
-            component={() => <Users {...props}/>}
-        />
-        <Route
-            component={() => <ErrorPage {...props}/>}
+            component={() => <ErrorPage/>}
         />
       </Switch>
   );

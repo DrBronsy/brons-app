@@ -43,13 +43,11 @@
       "images/*": [
         "src/images/*"
       ],
-      "relay/*": [
-        "src/relay/*"
-      ],
-      "__generated__/*": [
-        "src/__generated__/*"
+      "apollo/*": [
+        "src/apollo/*"
       ]
-    }
+    },
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "src/**/*",

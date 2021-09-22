@@ -6,21 +6,27 @@ import * as ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {BrowserRouter} from 'react-router-dom';
 
-import {createStore} from 'store/index';
+import {ApolloProvider} from '@apollo/client';
 
-import Router from 'routers/index';
+import {createStore} from 'store/index';
+import {createApolloClient} from 'apollo/index';
+
+import App from 'components/App';
 
 const store = createStore((window as any).__PRELOADED_STATE__);
+const apolloClient = createApolloClient((window as any).__APOLLO_STATE__, (window as any).__PRELOADED_STATE__.session.csrf);
 
 import './scss/index.scss';
 
 ReactDOM.hydrate(
     (
+      <ApolloProvider client={apolloClient}>
         <Provider store={store}>
-          <BrowserRouter basename={mode === 'deployment' ? '/CasualChat' : '/'}>
-            <Router/>
+          <BrowserRouter basename='/'>
+            <App/>
           </BrowserRouter>
         </Provider>
+      </ApolloProvider>
     ),
     document.getElementById('root'),
 );

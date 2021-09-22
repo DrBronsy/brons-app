@@ -2,27 +2,46 @@ import * as React from 'react';
 
 import {block as bem} from 'bem-cn';
 
-import {Metadata} from 'models/metadata';
+import {Link} from 'react-router-dom';
 
-import {Props} from 'routers/index';
-
-import App from 'components/App';
-
-const Context = React.createContext({
-  title: 'Pet project from Casual Chat video.',
-  h1: 'CasualChat'
-});
+import {gql, useQuery} from '@apollo/client';
 
 const block = bem('home');
 
 import './index.scss';
 
-export default ({ssr}: Props) => {
+const EXCHANGE_RATES = gql`
+    query User {
+        users {
+            id
+            displayName
+            _json {
+                steamid
+                timecreated
+                personaname
+            }
+        }
+    }
+`;
+
+function Test() {
+  const {loading, error, data} = useQuery(EXCHANGE_RATES);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error :(</p>;
+  return data.users.map(({id, displayName}: any, index: number) => (
+      <div key={index}>
+        <p>
+          {id}: {displayName}
+        </p>
+      </div>
+  ));
+}
+
+export default () => {
   return (
-      <Context.Consumer>
-        {(metadata: Metadata) => (
-            <App ssr={ssr} metadata={metadata} page={block()} />
-        )}
-      </Context.Consumer>
+    <div className={block()}>
+      <Test />
+      <Link to='/profile'>Profile</Link>
+    </div>
   );
 }
