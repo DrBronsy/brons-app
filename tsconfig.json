@@ -1,4 +1,8 @@
 {
+  "ts-node": {
+    "transpileOnly": true
+  },
+  "compileOnSave": false,
   "compilerOptions": {
     "outDir": "./dist/",
     "sourceMap": true,
@@ -45,15 +49,30 @@
       ],
       "apollo/*": [
         "src/apollo/*"
-      ]
+      ],
+      "controllers/*": [
+        "server/controllers/*"
+      ],
+      "services/*": [
+        "server/services/*"
+      ],
+      "api/*": [
+        "server/api/*"
+      ],
     },
     "allowSyntheticDefaultImports": true
+  },
+  "linterOptions": {
+    "exclude": [
+      "server/models/plugins/*"
+    ]
   },
   "include": [
     "src/**/*",
     "typings/**/*"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "server/models/plugins/*"
   ]
 }

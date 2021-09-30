@@ -45,8 +45,13 @@ import {
   InMemoryCache,
   ApolloProvider
 } from '@apollo/client';
+import { SchemaLink } from '@apollo/client/link/schema';
+import { renderToStringWithData } from '@apollo/client/react/ssr';
+import { makeExecutableSchema } from 'graphql-tools';
 import * as core from 'express-serve-static-core';
 import {StaticRouterContext} from 'react-router';
+import {gql} from "apollo-server-express";
+import UserModel from "./models/user.model";
 
 const MetadataExtractorRegExp = /<code.*?data-extract=['"]true['"].*?>(?<metadata>.*?)<\/code>/ig;
 
@@ -85,17 +90,56 @@ async function render(
     }
   });
 
+  const typeDefs = gql`
+      type User {
+          id: ID!
+          displayName: String,
+          steam: Steam
+      }
+
+      type Steam {
+          lvl: String,
+          steamid: String,
+      }
+
+      type Query {
+          users: [User]
+          user: User!
+      }
+  `;
+
+  const resolvers = {
+    Query: {
+      async users() {
+        const res: any = await UserModel.find({});
+        return res.map((u: any) => ({
+          id: u._id.toString(),
+          displayName: u.displayName,
+          steam: u.steam
+        }));
+      }
+    },
+  };
+
+  const schema = makeExecutableSchema({
+    typeDefs,
+    resolvers,
+    inheritResolversFromInterfaces: true,
+  });
+
   const client = new ApolloClient({
     ssrMode: true,
-    link: createHttpLink({
-      uri: '/graphql',
-      credentials: 'same-origin',
-      fetch,
-    }),
+    // @ts-ignore
+    link: new SchemaLink({ schema }),
+    // link: createHttpLink({
+    //   uri: '/graphql',
+    //   credentials: 'same-origin',
+    //   fetch,
+    // }),
     cache: new InMemoryCache(),
   });
 
-  const result = await renderToStringAsync(
+  const result = await renderToStringWithData(
       h(ApolloProvider,
           // @ts-ignore
           {client},
@@ -111,7 +155,7 @@ async function render(
       )
   );
 
-  const match = MetadataExtractorRegExp.exec(result);
+  console.log(client.extract())
 
   return {
     result: result.replace(MetadataExtractorRegExp, ''),
@@ -133,7 +177,6 @@ export default (APP: core.Express) => {
         user: req.user as User,
         header: req.header
       });
-
       if (context.url) {
         // If context contains redirect, go ot it
         res.redirect(302, context.url);

@@ -211,7 +211,11 @@ module.exports = (target, mode) => {
             'css-loader',
             {
               loader: 'less-loader',
-              options: { javascriptEnabled: true },
+              options: {
+                lessOptions: {
+                  javascriptEnabled: true,
+                }
+              },
             },
           ],
         },

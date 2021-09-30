@@ -72,6 +72,8 @@ APP.use(
     )
 );
 
+
+
 if (certificates) {
   APP.use('*', (req, res, next) => {
     if (!req.secure) {
@@ -85,6 +87,7 @@ if (certificates) {
 import Renderer from './server/render';
 import Passport from './server/passport';
 import Graphql from './server/graphql';
+import Mongo from './server/mongo';
 
 Graphql(APP);
 
@@ -100,17 +103,18 @@ APP.use('*', (req, res, next) => {
   next();
 });
 
-
 Renderer(APP);
-
 
 APP.set('port', PORTS.main);
 
-if (certificates) {
-  HTTPS.createServer({
-    key: FS.readFileSync(certificates.key),
-    cert: FS.readFileSync(certificates.cert)
-  }, APP).listen(PORTS.http2);
-} else {
-  HTTP.createServer(APP).listen(PORTS.http);
-}
+Mongo(() => {
+  if (certificates) {
+    HTTPS.createServer({
+      key: FS.readFileSync(certificates.key),
+      cert: FS.readFileSync(certificates.cert)
+    }, APP).listen(PORTS.http2);
+  } else {
+    HTTP.createServer(APP).listen(PORTS.http);
+  }
+});
+

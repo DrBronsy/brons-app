@@ -6,11 +6,11 @@ import {
   Strategy as SteamStrategy
 } from 'passport-steam';
 
-import {User, DoneUser} from '../../src/models/user';
-
 import * as CONFIG from 'config/config.secret.json';
 
-import {createUserForSteam, redirect} from 'server/passport';
+import {redirect} from 'server/passport';
+
+import {registerUserForSteam} from 'controllers/auth.controller';
 
 export default (APP: core.Express, passport: PassportStatic) => {
   passport.use(
@@ -20,7 +20,7 @@ export default (APP: core.Express, passport: PassportStatic) => {
         apiKey: CONFIG.steam.clientSecret
       },
       (identifier: any, profile: any, done: any) => {
-        createUserForSteam(profile)
+        registerUserForSteam({...profile})
         .then((user: any) => done(null, user))
         .catch((error) => done(error));
       }

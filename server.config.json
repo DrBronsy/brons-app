@@ -2,14 +2,15 @@
   "apps": [
     {
       "name": "App",
-      "script": "./scripts/server.ts",
+      "script": "./server.ts",
       "node_args": [],
       "instances": "1",
       "exec_mode": "cluster",
       "watch": true,
       "cwd": ".",
       "env": {
-        "NODE_ENV": "development"
+        "NODE_ENV": "production",
+        "TS_NODE_FILES": true
       },
       "ports": {
         "main": "7600",

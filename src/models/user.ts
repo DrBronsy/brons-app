@@ -2,58 +2,59 @@ import {ObjectId} from 'mongodb';
 
 export interface User {
   _id?: ObjectId,
-  id?: string;
-  displayName?: string;
-  steam?: {
-    steamId: string;
-    personaname: string;
-    profileurl: string;
-    avatar?: string;
-    primaryclanid: string;
-    timecreated: number;
-    photos?: string;
-    _json?: string
-  }
-  facebook?: {
-    id: string;
-    access: string;
-    refresh: string;
-  };
-  google?: {
-    id: string;
-    token: string;
-    secret: string;
-  };
-  twitter?: {
-    id: string;
-    token: string;
-    secret: string;
-  };
-  yandex?: {
-    id: string;
-    access: string;
-    refresh: string;
-  };
+  displayName?: string,
+  trustRating: number,
+  steam: UserSteam,
+  csgoStat: CsgoStat,
   vk?: {
-    id: string;
-    access: string;
-    refresh: string;
-  };
-  github?: {
-    id: string;
-    access: string;
-    refresh: string;
+    id: string,
+    access: string,
+    refresh: string,
   };
 }
 
-export interface UserSearch {
-  'facebook.id'?: User['facebook']['id'];
-  'google.id'?: User['google']['id'];
-  'twitter.id'?: User['twitter']['id'];
-  'yandex.id'?: User['yandex']['id'];
-  'vk.id'?: User['vk']['id'];
-  'github.id'?: User['github']['id'];
+export interface CsgoStat {
+  total_time_played: string,
+  playtime_forever: string,
+  playtime_2weeks: string,
 }
+
+
+export interface UserSearch {
+  'steam.steamId'?: User['vk']['id'];
+}
+
+export interface UserSteam {
+  provider: string,
+  id: number,
+  displayName: string,
+  avatarmedium: string,
+  avatarfull: string,
+  profileurl: string,
+  timecreated: number,
+  photos: [
+    {
+      value: string
+    }
+  ]
+  _json: {
+    steamid: string,
+    communityvisibilitystate: number,
+    profilestate: number,
+    personaname: string,
+    commentpermission: number,
+    avatar: string,
+    avatarmedium: string,
+    avatarfull: string,
+    avatarhash: string,
+    lastlogoff: number,
+    personastate: number,
+    primaryclanid: string,
+    timecreated: number,
+    personastateflags: number
+  }
+}
+
 
 export type DoneUser = (error: any, user?: User) => void;
 export type DoneId = (error: any, id?: string) => void;

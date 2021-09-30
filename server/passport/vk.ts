@@ -12,7 +12,7 @@ import {User, DoneUser} from '../../src/models/user';
 
 import * as CONFIG from '../../config/config.secret.json';
 
-import {createUser, redirect} from 'server/passport';
+import {redirect} from 'server/passport';
 
 export default (APP: core.Express, passport: PassportStatic) => {
   passport.use(
@@ -31,22 +31,22 @@ export default (APP: core.Express, passport: PassportStatic) => {
               profile: VKProfile,
               done: DoneUser
           ) => {
-            createUser(
-                req,
-                {
-                  'vk.id': profile.id,
-                },
-                {
-                  displayName: profile.displayName,
-                  vk: {
-                    id: profile.id,
-                    access: accessToken,
-                    refresh: refreshToken,
-                  }
-                }
-            )
-            .then((user: User) => done(null, user))
-            .catch((error) => done(error));
+            // createUser(
+            //     req,
+            //     {
+            //       'vk.id': profile.id,
+            //     },
+            //     {
+            //       displayName: profile.displayName,
+            //       vk: {
+            //         id: profile.id,
+            //         access: accessToken,
+            //         refresh: refreshToken,
+            //       }
+            //     }
+            // )
+            // .then((user: User) => done(null, user))
+            // .catch((error) => done(error));
           }) as any
       )
   );

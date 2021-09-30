@@ -3,24 +3,36 @@ import {join} from 'path';
 import { ApolloServer, gql }  from 'apollo-server-express';
 import {loadSchemaSync} from '@graphql-tools/load';
 import {GraphQLFileLoader} from '@graphql-tools/graphql-file-loader';
-import {User} from 'models/user';
+import UserModel from '../server/models/user.model';
+import {makeExecutableSchema} from '@graphql-tools/schema';
 
-import DB from './mongo';
+const typeDefs = gql`
+    type User {
+        id: ID!
+        displayName: String,
+        steam: Steam
+    }
 
-const typeDefs: any = loadSchemaSync(join(__dirname, '/../data/schema.graphql'), {
-  loaders: [
-    new GraphQLFileLoader(),
-  ]
-});
+    type Steam {
+        lvl: String,
+        steamid: String,
+    }
+
+    type Query {
+        users: [User]
+        user: User!
+    }
+`;
 
 const resolvers = {
   Query: {
-    users: async () => {
-      const db = await DB();
-      const result = await db.collection('users').find().toArray();
-      return result.map((user: User) => ({
+    async users() {
+      const result = await UserModel.find({});
+      console.log(result)
+      return result.map((user: any) => ({
         id: user._id.toString(),
-        ...user
+        displayName: user.displayName,
+        steam: user.steam
       }));
     }
   },
