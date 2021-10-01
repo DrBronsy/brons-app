@@ -15,25 +15,16 @@ const block = bem('profile-main-info');
 
 export interface Props {
   className?: string
-  user?: User
 }
 
-export default function Profile({user, className}: Props): JSX.Element {
-  const {
-    displayName,
-    trustRating,
-    steam: {
-      avatarfull,
-      profileurl,
-      timecreated,
-    },
-    csgoStat
-  } = user;
+export default function Profile({className}: Props): JSX.Element {
 
   const styleCardBody = {
     width: '100%',
     display: 'flex'
   }
+
+  return null
 
   const playtimeForever = Math.round(parseInt(user.csgoStat.playtime_forever, 0) / 60);
   const playtimeReal = Math.round(parseInt(user.csgoStat.total_time_played, 0) / 60 / 60);

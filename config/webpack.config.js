@@ -70,8 +70,7 @@ const getEntry = (target) => {
     case Targets.SERVER:
       return {
         index: './src/server.tsx',
-        router: './src/routers/index.tsx',
-        store: './src/store/index.ts'
+        router: './src/routers/index.tsx'
       };
   }
 };

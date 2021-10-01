@@ -1,14 +1,11 @@
 import * as React from 'react';
-import {connect} from 'react-redux';
 import {gql, useQuery} from '@apollo/client';
-import moment from 'moment';
 import {Card} from 'antd';
 
 import {block as bem} from 'bem-cn';
 
 import './index.scss';
 
-import {State as StoreTree} from 'store/index';
 import {OwnProps} from 'components/AntdLayout';
 import {User} from 'models/user';
 
@@ -27,17 +24,23 @@ const USER = gql`
     }
 `;
 
+const SESSION = gql`
+    query Session {
+        session @client
+    }
+`;
+
 function Test() {
-  const {loading, error, data} = useQuery(USER, {ssr: true});
+  // const {loading, error, data} = useQuery(USER);
+  const {loading, error, data} = useQuery(SESSION);
+  console.log(data)
+  return null
   if (error) {
     throw Error(error.toString())
   }
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
-  if (data.users === null) {
-    return null
-  }
   return data?.users?.map(({id, displayName}: any, index: number) => (
       <div key={index}>
         <p>
@@ -64,12 +67,7 @@ const tabListStats = [
   },
 ];
 
-export interface Props extends OwnProps {
-  children?: JSX.Element
-  user: User;
-}
-
-function Profile({user}: Props): JSX.Element {
+export default function Profile(): JSX.Element {
   const [activeTabKey, setActiveTabKey] = React.useState('mainStat')
 
   const onTabChange = (key: string) => {
@@ -86,7 +84,7 @@ function Profile({user}: Props): JSX.Element {
   return (
       <div className={block()}>
           <Test/>
-          <ProfileMainInfo className={block('profile-main-info')} user={user}/>
+          <ProfileMainInfo className={block('profile-main-info')}/>
           <Card
             bordered={false}
             bodyStyle={{width: '100%'}}
@@ -101,12 +99,3 @@ function Profile({user}: Props): JSX.Element {
       </div>
   );
 }
-
-export default connect(
-    (state: StoreTree, ownProps: OwnProps) => ({
-      ...ownProps,
-      csrf: state.session.csrf,
-      user: state.session.user,
-    }),
-    (dispatch) => ({}),
-)(Profile);

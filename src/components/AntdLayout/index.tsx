@@ -1,23 +1,14 @@
 import * as React from 'react'
 import {Link} from 'react-router-dom'
-import {connect} from 'react-redux';
-import { Layout, Menu, Space, Avatar, Row, Col, Dropdown } from 'antd';
-import { BellOutlined } from '@ant-design/icons';
+import { Layout, Menu, Space, Avatar, Dropdown } from 'antd';
 
 import bemCn from 'bem-cn';
 import cn from 'classnames';
 
 import './index.scss';
 
-import {State as StoreTree} from 'store/index';
-import {User} from 'models/user';
-
-export interface OwnProps {
-}
-
-export interface Props extends OwnProps {
+export interface Props {
   children?: JSX.Element
-  user: User;
 }
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -36,12 +27,8 @@ const menu = (
 
 const bem = bemCn('main-layout');
 
-function AntdLayout({children, user}: Props): JSX.Element {
+export default function AntdLayout({children}: Props): JSX.Element {
   const [collapsed, setCollapsed] = React.useState(true);
-  const {steam: {
-      avatarmedium,
-    }
-  } = user;
 
   const onCollapse = (collapse: boolean): void => {
     setCollapsed(collapse);
@@ -58,7 +45,7 @@ function AntdLayout({children, user}: Props): JSX.Element {
               <Space align='center'>
                 <div className={bem('avatar-wrap')}>
                   <Dropdown overlay={menu} trigger={['click']} placement='bottomRight'>
-                    <Avatar className={bem('avatar')} size='large' src={avatarmedium} />
+                    <Avatar className={bem('avatar')} size='large' />
                   </Dropdown>
                 </div>
               </Space>
@@ -77,12 +64,3 @@ function AntdLayout({children, user}: Props): JSX.Element {
       </Layout>
   );
 }
-
-export default connect(
-    (state: StoreTree, ownProps: OwnProps) => ({
-      ...ownProps,
-      csrf: state.session.csrf,
-      user: state.session.user,
-    }),
-    (dispatch) => ({}),
-)(AntdLayout);

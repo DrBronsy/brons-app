@@ -93,21 +93,23 @@ Graphql(APP);
 
 Passport(APP);
 
-APP.use('*', (req, res, next) => {
-  if (!req.user && req.baseUrl !== '/login') {
-    (req.session as any).returnTo = req.originalUrl;
+// APP.use('*', (req, res, next) => {
+//   if (!req.user && req.baseUrl !== '/login') {
+//     (req.session as any).returnTo = req.originalUrl;
+//
+//     return res.redirect('/login');
+//   }
+//
+//   next();
+// });
 
-    return res.redirect('/login');
-  }
 
-  next();
-});
-
+// SSR
 Renderer(APP);
 
-APP.set('port', PORTS.main);
-
+// Server start
 Mongo(() => {
+  APP.set('port', PORTS.main);
   if (certificates) {
     HTTPS.createServer({
       key: FS.readFileSync(certificates.key),
