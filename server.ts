@@ -93,16 +93,15 @@ Graphql(APP);
 
 Passport(APP);
 
-// APP.use('*', (req, res, next) => {
-//   if (!req.user && req.baseUrl !== '/login') {
-//     (req.session as any).returnTo = req.originalUrl;
-//
-//     return res.redirect('/login');
-//   }
-//
-//   next();
-// });
+APP.use('*', (req, res, next) => {
+  if (!req.user && req.baseUrl !== '/login') {
+    (req.session as any).returnTo = req.originalUrl;
 
+    return res.redirect('/login');
+  }
+
+  next();
+});
 
 // SSR
 Renderer(APP);

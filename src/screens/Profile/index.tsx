@@ -6,7 +6,6 @@ import {block as bem} from 'bem-cn';
 
 import './index.scss';
 
-import {OwnProps} from 'components/AntdLayout';
 import {User} from 'models/user';
 
 import ProfileMainInfo from './ProfileMainInfo'
@@ -24,17 +23,8 @@ const USER = gql`
     }
 `;
 
-const SESSION = gql`
-    query Session {
-        session @client
-    }
-`;
-
 function Test() {
-  // const {loading, error, data} = useQuery(USER);
-  const {loading, error, data} = useQuery(SESSION);
-  console.log(data)
-  return null
+  const {loading, error, data} = useQuery(USER);
   if (error) {
     throw Error(error.toString())
   }
@@ -95,7 +85,6 @@ export default function Profile(): JSX.Element {
             }} >
           {tabContent[activeTabKey]}
           </Card>
-
       </div>
   );
 }

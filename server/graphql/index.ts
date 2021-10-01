@@ -7,7 +7,7 @@ import resolvers from './resolvers'
 export default async (APP: core.Express) => {
   const server = new ApolloServer({
     typeDefs,
-    resolvers
+    resolvers: resolvers()
   });
   await server.start();
 

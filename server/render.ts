@@ -39,7 +39,7 @@ import {StaticRouter} from 'react-router-dom';
 // Apollo
 import {
   ApolloClient,
-  ApolloProvider
+  ApolloProvider, InMemoryCache
 } from '@apollo/client';
 import { SchemaLink } from '@apollo/client/link/schema';
 import { renderToStringWithData } from '@apollo/client/react/ssr';
@@ -47,7 +47,6 @@ import { makeExecutableSchema } from 'graphql-tools';
 import {StaticRouterContext} from 'react-router';
 import typeDefs from '../server/graphql/schema'
 import resolvers from '../server/graphql/resolvers'
-import cache from '../server/graphql/cache'
 
 function getFile(path: string): string {
   return FS.existsSync(path) ? FS.readFileSync(path, 'utf8') : '';
@@ -72,17 +71,15 @@ async function render(
 
   const schema = makeExecutableSchema({
     typeDefs,
-    resolvers,
+    resolvers: resolvers({url, csrf, user}),
     inheritResolversFromInterfaces: true,
   });
 
   const client = new ApolloClient({
     ssrMode: true,
     link: new SchemaLink({schema}),
-    cache: cache({url, csrf, user})
+    cache: new InMemoryCache()
   });
-
-  client.cache.restore({...{url, csrf, user} });
 
   const result = await renderToStringWithData(
       h(ApolloProvider,
