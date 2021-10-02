@@ -6,6 +6,7 @@ import bemCn from 'bem-cn';
 import cn from 'classnames';
 
 import './index.scss';
+import {gql, useQuery} from "@apollo/client";
 
 export interface Props {
   children?: JSX.Element
@@ -27,7 +28,25 @@ const menu = (
 
 const bem = bemCn('main-layout');
 
+const ME = gql`
+    query Session {
+        session @client {
+            user {
+                steam {
+                    avatarfull
+                }
+            }
+        }
+    }
+`
+
 export default function AntdLayout({children}: Props): JSX.Element {
+  const {loading, data} = useQuery(ME);
+
+  if (loading) return <div>Loading</div>;
+
+  const {session: {user: {steam: {avatarfull}}}} = data;
+
   const [collapsed, setCollapsed] = React.useState(true);
 
   const onCollapse = (collapse: boolean): void => {
@@ -45,7 +64,7 @@ export default function AntdLayout({children}: Props): JSX.Element {
               <Space align='center'>
                 <div className={bem('avatar-wrap')}>
                   <Dropdown overlay={menu} trigger={['click']} placement='bottomRight'>
-                    <Avatar className={bem('avatar')} size='large' />
+                    <Avatar className={bem('avatar')} size='large' src={avatarfull}/>
                   </Dropdown>
                 </div>
               </Space>

@@ -7,9 +7,8 @@ import {
   getSteamLevel
 } from '../services/steam.service';
 
-export const findUser = async (filter: object) => {
-  const user = await UserModel.findOne(filter);
-  return user;
+export const findUser = (filter: object) => {
+  return UserModel.findOne(filter);
 }
 
 export const createOrUpdateUserForSteam = async (profile: UserSteam) => {
@@ -23,7 +22,7 @@ export const createOrUpdateUserForSteam = async (profile: UserSteam) => {
   const userUpdateInfo: object = {
     displayName: profile.displayName,
     steam: {lvl: steamLevel, ...profile._json},
-    csgoStat: CSGOStat
+    csgoStat: CSGOStat || {}
   }
 
   let user = await UserModel.findOneAndUpdate({'steam.steamid': profile.id}, userUpdateInfo)

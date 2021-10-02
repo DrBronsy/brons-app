@@ -83,6 +83,7 @@ async function render(
 
   const result = await renderToStringWithData(
       h(ApolloProvider,
+          // @ts-ignore
           {client},
           h(
               StaticRouter,

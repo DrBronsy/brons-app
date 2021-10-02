@@ -3,9 +3,10 @@ import {gql} from 'apollo-server-express';
 export default gql`
     type User {
         id: ID!
-        displayName: String!,
-        steam: Steam!,
+        displayName: String!
+        steam: Steam!
         csgoStat: CSGOStat
+        timecreated: Int
     }
 
     type Steam {

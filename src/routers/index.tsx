@@ -17,7 +17,7 @@ export default function Routs({user}: any): JSX.Element {
         <Route
             path='/'
             exact={true}
-            component={() => <AntdLayout><Home/></AntdLayout>}
+            component={() => false ? <Redirect to='/profile'/> : <AntdLayout><Home/></AntdLayout>}
         />
         <Route
             path='/login/'

@@ -1,45 +1,10 @@
 import * as React from 'react';
-import {gql, useQuery} from '@apollo/client';
 import {Card} from 'antd';
-
 import {block as bem} from 'bem-cn';
-
-import './index.scss';
-
-import {User} from 'models/user';
 
 import ProfileMainInfo from './ProfileMainInfo'
 
-const USER = gql`
-    query User {
-        users {
-            id
-            displayName
-            steam {
-                steamid
-                lvl
-            }
-        }
-    }
-`;
-
-function Test() {
-  const {loading, error, data} = useQuery(USER);
-  if (error) {
-    throw Error(error.toString())
-  }
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
-
-  return data?.users?.map(({id, displayName}: any, index: number) => (
-      <div key={index}>
-        <p>
-          {id}: {displayName}
-        </p>
-      </div>
-  ));
-}
-
+import './index.scss';
 const block = bem('profile-screen');
 
 const tabListStats = [
@@ -73,7 +38,6 @@ export default function Profile(): JSX.Element {
 
   return (
       <div className={block()}>
-          <Test/>
           <ProfileMainInfo className={block('profile-main-info')}/>
           <Card
             bordered={false}
