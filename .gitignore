@@ -1,16 +1,16 @@
 .idea
 .DS_Store
+.git
+.github
 
 node_modules
 
 build
-src/__generated__
 
 *.crt
 *.csr
 *.key
 *.log
+*.pem
 
 *.secret.json
-
-docker-mongodb.yml

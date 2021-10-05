@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 import * as CONFIG from '../config/config.secret.json';
 
-const urlDev = `mongodb://${CONFIG.mongodb.host}`;
+const urlDev = `mongodb://mongo:27017`;
 
 export default async (cb: VoidFunction) => {
   await mongoose.connect(urlDev, {
