@@ -1,16 +1,8 @@
 {
-  "name": "App",
+  "name": "brons.app",
   "private": true,
   "version": "0.0.0",
-  "description": "Pet project from Casual Chat video.",
-  "keywords": [
-    "React App",
-    "JavaScript",
-    "TypeScript",
-    "Node.js",
-    "React",
-    "Express"
-  ],
+  "description": "",
   "license": "MIT",
   "man": "./README.md",
   "repository": {
@@ -25,9 +17,8 @@
     "lint": "npm run lint:tslint && npm run lint:eslint",
     "lint:eslint": "eslint -c .eslintrc.json --no-error-on-unmatched-pattern '{scripts,src}/**/*.{js,jsx}'",
     "lint:tslint": "tslint -c tslint.json -e '**/*.example.*' --project tsconfig.json '{scripts,src}/**/*.{ts,tsx}'",
-    "postinstall": "yarn run postinstall:git-lfs && yarn run postinstall:husky",
+    "postinstall": "yarn run postinstall:git-lfs",
     "postinstall:git-lfs": "git lfs update --force",
-    "postinstall:husky": "husky install",
     "ci": "yarn install --frozen-lockfile",
     "server": "ts-node --project tsconfig.json --require tsconfig-paths/register --files server.ts",
     "server:watch": "nodemon -e ts --watch 'build/**/*' --watch 'server/**/*' --watch 'server.ts' --exec yarn server",
@@ -148,14 +139,5 @@
     "webpack": "^5.52.1",
     "webpack-cli": "^4.8.0",
     "webpack-node-externals": "^3.0.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn run lint",
-      "pre-push": "yarn run lint && yarn run build:production",
-      "post-commit": "git status",
-      "post-checkout": "yarn run ci",
-      "post-merge": "yarn run ci"
-    }
   }
 }

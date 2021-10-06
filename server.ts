@@ -10,7 +10,7 @@ import * as COMPRESSION from 'compression';
 import * as SESSION from 'express-session';
 import * as CSRF from 'csurf';
 
-import * as SERVER_SETTINGS from './server.config.json';
+import * as SERVER_SETTINGS from './config/server.config.json';
 import * as CONFIG from './config/config.secret.json';
 
 process.env.NODE_ENV = SERVER_SETTINGS.apps[0].env.NODE_ENV || 'production';
