@@ -22,10 +22,6 @@ require.extensions['.jpeg'] = () => '';
 require.extensions['.scss'] = () => '';
 require.extensions['.less'] = () => '';
 
-import * as CONFIG from '../config/config.secret.json';
-
-(global as any).CONFIG = CONFIG;
-
 import {default as App} from '../src/server';
 
 // Get json serialize

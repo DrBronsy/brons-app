@@ -3,7 +3,6 @@ const path = require('path');
 const webpack = require('webpack');
 
 const PACKAGE = require('../package.json');
-const CONFIG = require('./config.secret.json');
 
 const TerserPlugin = require('terser-webpack-plugin');
 
@@ -281,7 +280,6 @@ module.exports = (target, mode) => {
         target: JSON.stringify(target),
         mode: JSON.stringify(mode),
         'process.env.NODE_ENV': JSON.stringify(mode === 'deployment' ? 'production' : mode),
-        CONFIG: JSON.stringify(CONFIG),
       }),
       new SpriteLoaderPlugin({
         plainSprite: true

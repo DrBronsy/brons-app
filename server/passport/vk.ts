@@ -10,7 +10,7 @@ import {
 
 import {User, DoneUser} from '../../src/models/user';
 
-import * as CONFIG from '../../config/config.secret.json';
+import CONFIG from '../../config/app.config';
 
 import {redirect} from 'server/passport';
 

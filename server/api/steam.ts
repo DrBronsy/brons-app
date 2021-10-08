@@ -1,9 +1,11 @@
 // tslint:disable-next-line:no-var-requires
 const SteamAPI = require('steam-web');
-import * as CONFIG from '../../config/config.secret.json';
+import CONFIG from '../../config/app.config';
+
+console.log(CONFIG)
 const steamAPI = new SteamAPI(
     {
-      apiKey: CONFIG.steam.clientSecret,
+      apiKey: CONFIG.steam.apiKey,
       format: 'json'
     }
 );

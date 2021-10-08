@@ -11,7 +11,7 @@ import * as SESSION from 'express-session';
 import * as CSRF from 'csurf';
 
 import * as SERVER_SETTINGS from './config/server.config.json';
-import * as CONFIG from './config/config.secret.json';
+import CONFIG from './config/app.config';
 
 process.env.NODE_ENV = SERVER_SETTINGS.apps[0].env.NODE_ENV || 'production';
 
@@ -108,14 +108,16 @@ Renderer(APP);
 
 // Server start
 Mongo(() => {
-  APP.set('port', PORTS.main);
+  APP.set('port', CONFIG.port);
   if (certificates) {
     HTTPS.createServer({
       key: FS.readFileSync(certificates.key),
       cert: FS.readFileSync(certificates.cert)
-    }, APP).listen(PORTS.http2);
+    }, APP).listen(CONFIG.port);
+    console.info('HTTPS Server start ' + CONFIG.port)
   } else {
-    HTTP.createServer(APP).listen(PORTS.http);
+    HTTP.createServer(APP).listen(CONFIG.port);
+    console.info('HTTP Server start ' + CONFIG.port)
   }
 });
 

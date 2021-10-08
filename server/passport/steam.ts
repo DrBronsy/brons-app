@@ -6,7 +6,7 @@ import {
   Strategy as SteamStrategy
 } from 'passport-steam';
 
-import * as CONFIG from 'config/config.secret.json';
+import CONFIG from 'config/app.config';
 
 import {redirect} from 'server/passport';
 
@@ -17,7 +17,7 @@ export default (APP: core.Express, passport: PassportStatic) => {
       new SteamStrategy({
         returnURL: `${CONFIG.domain}/login/steam/callback`,
         realm: CONFIG.domain,
-        apiKey: CONFIG.steam.clientSecret
+        apiKey: CONFIG.steam.apiKey
       },
       (identifier: any, profile: any, done: any) => {
         registerUserForSteam({...profile})

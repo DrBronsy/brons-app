@@ -14,3 +14,7 @@ build
 *.pem
 
 *.secret.json
+
+# Environment varibales
+.env*
+!.env*.example

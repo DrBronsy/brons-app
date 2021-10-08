@@ -4,7 +4,7 @@ import * as passport from 'passport';
 import PassportVK from './passport/vk';
 import PassportSteam from './passport/steam';
 
-import * as CONFIG from '../config/config.secret.json';
+import CONFIG from '../config/app.config';
 
 import {ObjectId} from 'mongodb';
 
@@ -49,7 +49,7 @@ export default (APP: core.Express) => {
   //   PassportVK(APP, passport);
   // }
 
-  if (CONFIG.steam.clientSecret) {
+  if (CONFIG.steam.apiKey) {
     PassportSteam(APP, passport);
   }
 
